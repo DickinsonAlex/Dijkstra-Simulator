@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\P2152\\source\\repos\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj": {}
+    "C:\\Users\\P2152\\Documents\\GitHub Repos\\DijkstraSimulator\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj": {}
   },
   "projects": {
-    "C:\\Users\\P2152\\source\\repos\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj": {
+    "C:\\Users\\P2152\\Documents\\GitHub Repos\\DijkstraSimulator\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\P2152\\source\\repos\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj",
+        "projectUniqueName": "C:\\Users\\P2152\\Documents\\GitHub Repos\\DijkstraSimulator\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj",
         "projectName": "Dijkstra Algorithm",
-        "projectPath": "C:\\Users\\P2152\\source\\repos\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj",
+        "projectPath": "C:\\Users\\P2152\\Documents\\GitHub Repos\\DijkstraSimulator\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj",
         "packagesPath": "C:\\Users\\P2152\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\P2152\\source\\repos\\Dijkstra Algorithm\\obj\\",
+        "outputPath": "C:\\Users\\P2152\\Documents\\GitHub Repos\\DijkstraSimulator\\Dijkstra Algorithm\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\P2152\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,10 +49,29 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.32, 3.1.32]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -57,7 +80,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

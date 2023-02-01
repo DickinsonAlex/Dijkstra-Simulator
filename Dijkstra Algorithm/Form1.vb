@@ -5,6 +5,9 @@ Public Class Form1
     Public AdjacencyMatrix(2, 2) As Integer
     Public SelectedNode As Button
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Open form 2
+        Dim f2 As New Form2
+        f2.Show()
         AdjMatrix.Font = New Font("Lucida Console", 5 + Me.Height / 50)
         MakeNodes()
     End Sub

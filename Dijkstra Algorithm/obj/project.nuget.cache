@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "OlWqW6DzGQYy39X0gyXDOKHT+R9lAX4swGIMntOt5uOhy46xwj5VQ5qC/94XOmFnn8UHMDGcQXMOwyRcOImEJw==",
+  "dgSpecHash": "tiRUvHoYpmXTv56nXtMnVbB7IPUp373JabH+6A/ZTt9aFB4WDHOv3WCh4Io7YsFcKSMKcFI5FG2SuRtDbkUWaw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\P2152\\source\\repos\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\P2152\\Documents\\GitHub Repos\\DijkstraSimulator\\Dijkstra Algorithm\\Dijkstra Algorithm.vbproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\P2152\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\P2152\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\P2152\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\P2152\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.32\\microsoft.netcore.app.host.win-x64.3.1.32.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,3 +1,9 @@
 is_global = true
+build_property.ApplicationManifest = 
+build_property.StartupObject = Dijkstra_Algorithm.Form1
+build_property.ApplicationDefaultFont = 
+build_property.ApplicationHighDpiMode = 
+build_property.ApplicationUseCompatibleTextRendering = 
+build_property.ApplicationVisualStyles = 
 build_property.RootNamespace = Dijkstra_Algorithm
-build_property.ProjectDir = C:\Users\P2152\source\repos\Dijkstra Algorithm\
+build_property.ProjectDir = C:\Users\P2152\Documents\GitHub Repos\DijkstraSimulator\Dijkstra Algorithm\
