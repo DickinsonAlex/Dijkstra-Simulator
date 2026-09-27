@@ -75,6 +75,7 @@ Partial Class Form1
         '
         Me.WeightValue.Location = New System.Drawing.Point(113, 61)
         Me.WeightValue.Maximum = New Decimal(New Integer() {50, 0, 0, 0})
+        Me.WeightValue.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.WeightValue.Name = "WeightValue"
         Me.WeightValue.Size = New System.Drawing.Size(77, 31)
         Me.WeightValue.TabIndex = 7

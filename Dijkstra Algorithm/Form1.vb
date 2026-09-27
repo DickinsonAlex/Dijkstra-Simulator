@@ -147,6 +147,10 @@ Public Class Form1
             Next
         Next
         PathLbl.Text = ""
+        For Each node As Button In Nodes
+            node.BackColor = Color.Red
+            node.ForeColor = Color.Red
+        Next
         DisplayAdjacencyMatrix()
     End Sub
 
@@ -159,19 +163,108 @@ Public Class Form1
 
     Private Sub GetPath_Click(sender As Object, e As EventArgs) Handles GetPath.Click
         PathLbl.Text = ""
-        If StartOption.SelectedIndex >= 0 And EndOption.SelectedIndex >= 0 Then
-            Dim count As Integer = AdjacencyMatrix.Length
-            Dim vistedVertex(count) As Boolean
-            Dim distance(count) As Integer
-            For x As Integer = 0 To count
-                vistedVertex(x) = False
-                distance(x) = Integer.MaxValue
-            Next
-
-            Debug.WriteLine(count)
-
-
+        ResetHighlights()
+        If StartOption.SelectedIndex < 0 Or EndOption.SelectedIndex < 0 Then
+            PathLbl.Text = "Pick a start and an end node."
+            Return
         End If
 
+        ' The matrix has a header row/column at index 0, so nodes are 1..n
+        Dim n As Integer = Math.Min(CInt(Sqrt(AdjacencyMatrix.Length)) - 1, Nodes.Count)
+        Dim source As Integer = StartOption.SelectedIndex + 1
+        Dim target As Integer = EndOption.SelectedIndex + 1
+
+        Dim distance(n) As Integer
+        Dim previous(n) As Integer
+        Dim visited(n) As Boolean
+        For i As Integer = 1 To n
+            distance(i) = Integer.MaxValue
+            previous(i) = 0
+            visited(i) = False
+        Next
+        distance(source) = 0
+
+        ' Dijkstra: repeatedly settle the closest unvisited node, then relax its edges
+        For iteration As Integer = 1 To n
+            Dim current As Integer = 0
+            For i As Integer = 1 To n
+                If Not visited(i) And distance(i) <> Integer.MaxValue Then
+                    If current = 0 OrElse distance(i) < distance(current) Then current = i
+                End If
+            Next
+            If current = 0 Or current = target Then Exit For
+            visited(current) = True
+
+            For neighbour As Integer = 1 To n
+                Dim weight As Integer = AdjacencyMatrix(current, neighbour)
+                If weight > 0 And Not visited(neighbour) Then
+                    If distance(current) + weight < distance(neighbour) Then
+                        distance(neighbour) = distance(current) + weight
+                        previous(neighbour) = current
+                    End If
+                End If
+            Next
+        Next
+
+        If distance(target) = Integer.MaxValue Then
+            PathLbl.Text = "No path from " & NodeName(source) & " to " & NodeName(target) & "."
+            Return
+        End If
+
+        ' Walk back from the target to build the route
+        Dim route As New List(Of Integer)
+        Dim stepNode As Integer = target
+        While stepNode <> 0
+            route.Insert(0, stepNode)
+            stepNode = previous(stepNode)
+        End While
+
+        Dim names As New List(Of String)
+        For Each index As Integer In route
+            names.Add(NodeName(index))
+        Next
+        PathLbl.Text = String.Join(" > ", names) & "  (distance " & distance(target) & ")"
+        HighlightRoute(route)
+    End Sub
+
+    Private Function NodeName(index As Integer) As String
+        Return Nodes(index - 1).Text
+    End Function
+
+    Private Function NodeCentre(index As Integer) As Point
+        Dim node As Button = Nodes(index - 1)
+        Return New Point(node.Location.X + node.Width \ 2, node.Location.Y + node.Height \ 2)
+    End Function
+
+    Private Sub HighlightRoute(route As List(Of Integer))
+        Dim surface As Graphics = CreateGraphics()
+        Dim pathPen As New Pen(Color.LimeGreen, 5)
+        For i As Integer = 0 To route.Count - 2
+            surface.DrawLine(pathPen, NodeCentre(route(i)), NodeCentre(route(i + 1)))
+        Next
+        For Each index As Integer In route
+            Nodes(index - 1).BackColor = Color.LimeGreen
+            Nodes(index - 1).ForeColor = Color.LimeGreen
+        Next
+    End Sub
+
+    Private Sub ResetHighlights()
+        For Each node As Button In Nodes
+            node.BackColor = Color.Red
+            node.ForeColor = Color.Red
+        Next
+        ' Redraw the plain edges over any previous highlighted path
+        Dim surface As Graphics = CreateGraphics()
+        Dim edgePen As New Pen(BackColor, 5)
+        Dim linePen As New Pen(Color.Black, 2)
+        Dim n As Integer = Math.Min(CInt(Sqrt(AdjacencyMatrix.Length)) - 1, Nodes.Count)
+        For a As Integer = 1 To n
+            For b As Integer = a + 1 To n
+                If AdjacencyMatrix(a, b) > 0 Then
+                    surface.DrawLine(edgePen, NodeCentre(a), NodeCentre(b))
+                    surface.DrawLine(linePen, NodeCentre(a), NodeCentre(b))
+                End If
+            Next
+        Next
     End Sub
 End Class
