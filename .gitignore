@@ -1,0 +1,21 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+publish/
+artifacts/
+TestResults/
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.DotSettings.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local git transfer files
+*.bundle
