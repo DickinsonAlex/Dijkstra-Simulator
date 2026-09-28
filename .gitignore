@@ -19,3 +19,6 @@ Thumbs.db
 
 # Local git transfer files
 *.bundle
+
+# Local build output (kept out of the repo)
+/[Bb]uilds/
