@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dijkstra Simulator</title>
+    <meta name="description" content="Build a weighted graph and watch Dijkstra's shortest-path algorithm work through it step by step." />
+    <meta name="author" content="Alex Dickinson" />
+    <meta property="og:title" content="Dijkstra Simulator" />
+    <meta property="og:description" content="Build a weighted graph and watch Dijkstra's shortest-path algorithm work through it step by step." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://dijkstra.alexxdickinson.co.uk/og-image.png" />
+    <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#15171a" media="(prefers-color-scheme: dark)" />
+    <base href="/" />
+    <link rel="preload" id="webassembly" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="css/app.css" />
+    <script type="importmap"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="loading" role="status">
+            <div class="loading-dots"><span></span><span></span><span></span></div>
+            <p>Loading the simulator…</p>
+        </div>
+    </div>
+
+    <noscript>
+        <p style="text-align:center;padding:2rem">The Dijkstra Simulator needs JavaScript and WebAssembly to run.</p>
+    </noscript>
+
+    <div id="blazor-error-ui">
+        Something went wrong.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">✕</span>
+    </div>
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+</body>
+
+</html>

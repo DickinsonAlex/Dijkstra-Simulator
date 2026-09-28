@@ -1,0 +1,221 @@
+@using DijkstraSimulator.Core
+
+<PageTitle>Dijkstra Simulator</PageTitle>
+
+<header class="site-header">
+    <div>
+        <h1>Dijkstra Simulator</h1>
+        <p class="tagline">Build a weighted graph, then watch Dijkstra's algorithm find the shortest path through it.</p>
+    </div>
+    <a class="source-link" href="https://github.com/DickinsonAlex/Dijkstra-Simulator" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Source on GitHub
+    </a>
+</header>
+
+<main class="layout">
+    <aside class="panel controls" aria-label="Controls">
+        <section>
+            <h2>Graph</h2>
+            <div class="field">
+                <span class="label" id="node-count-label">Nodes</span>
+                <div class="stepper" role="group" aria-labelledby="node-count-label">
+                    <button type="button" aria-label="Remove a node" disabled="@(NodeCount <= MinNodes)" @onclick="() => SetNodeCount(NodeCount - 1)">−</button>
+                    <output aria-live="polite">@NodeCount</output>
+                    <button type="button" aria-label="Add a node" disabled="@(NodeCount >= MaxNodes)" @onclick="() => SetNodeCount(NodeCount + 1)">+</button>
+                </div>
+            </div>
+            <div class="button-row">
+                <button type="button" @onclick="Randomise">Random graph</button>
+                <button type="button" @onclick="graph.ClearEdges">Clear edges</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>Edges</h2>
+            <label class="field">
+                <span class="label">New edge weight</span>
+                <input type="number" min="1" max="@MaxWeight" value="@weight" @onchange="SetWeight" />
+            </label>
+            <p class="hint" aria-live="polite">@Hint</p>
+        </section>
+
+        <section>
+            <h2>Shortest path</h2>
+            <div class="button-row">
+                <label class="field stacked">
+                    <span class="label">From</span>
+                    <select value="@from" @onchange="SetFrom">
+                        @for (var i = 0; i < NodeCount; i++)
+                        {
+                            <option value="@i">@Name(i)</option>
+                        }
+                    </select>
+                </label>
+                <label class="field stacked">
+                    <span class="label">To</span>
+                    <select value="@to" @onchange="SetTo">
+                        @for (var i = 0; i < NodeCount; i++)
+                        {
+                            <option value="@i">@Name(i)</option>
+                        }
+                    </select>
+                </label>
+            </div>
+            <button type="button" class="primary" @onclick="FindPath">Find shortest path</button>
+
+            @if (result is not null)
+            {
+                <p class="result @(result.Found ? "found" : "not-found")" aria-live="polite">@result.Describe()</p>
+
+                <div class="step-controls" role="group" aria-label="Step through the search">
+                    <button type="button" title="First step" aria-label="First step" disabled="@(position == 0)" @onclick="() => GoTo(0)"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M3 3h2v10H3zM13 3v10L6 8z"/></svg></button>
+                    <button type="button" title="Step back" aria-label="Step back" disabled="@(position == 0)" @onclick="() => GoTo(position - 1)"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 3v10L5 8z"/></svg></button>
+                    <button type="button" class="replay" @onclick="Replay">@(playback is null ? "Replay" : "Playing…")</button>
+                    <button type="button" title="Step forward" aria-label="Step forward" disabled="@(!IsStepping)" @onclick="() => GoTo(position + 1)"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 3v10l7-5z"/></svg></button>
+                    <button type="button" title="Finished route" aria-label="Finished route" disabled="@(!IsStepping)" @onclick="() => GoTo(result.Steps.Count)"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M11 3h2v10h-2zM3 3v10l7-5z"/></svg></button>
+                </div>
+                <p class="hint">@StepDescription</p>
+            }
+            else
+            {
+                <p class="hint">Pick two nodes and find the shortest path between them.</p>
+            }
+        </section>
+    </aside>
+
+    <section class="panel canvas" aria-label="Graph">
+        <svg viewBox="0 0 @F(ViewSize) @F(ViewSize)" role="img" aria-label="@($"Graph with {NodeCount} nodes and {graph.Edges().Count} edges")">
+            @foreach (var edge in graph.Edges())
+            {
+                var (x1, y1) = points[edge.A];
+                var (x2, y2) = points[edge.B];
+                <g class="@EdgeClass(edge)" @onclick="() => graph.RemoveEdge(edge.A, edge.B)">
+                    <title>@Name(edge.A)–@Name(edge.B) (@edge.Weight): click to remove</title>
+                    <line class="edge-hit" x1="@F(x1)" y1="@F(y1)" x2="@F(x2)" y2="@F(y2)" />
+                    <line class="edge-line" x1="@F(x1)" y1="@F(y1)" x2="@F(x2)" y2="@F(y2)" />
+                </g>
+            }
+            @foreach (var edge in graph.Edges())
+            {
+                var (x1, y1) = points[edge.A];
+                var (x2, y2) = points[edge.B];
+                var text = edge.Weight.ToString();
+                var width = 14 + 9 * text.Length;
+                <g class="weight" transform="translate(@F((x1 + x2) / 2) @F((y1 + y2) / 2))">
+                    <rect x="@F(-width / 2.0)" y="-12" width="@width" height="24" rx="6" />
+                    <text dy="0.35em">@text</text>
+                </g>
+            }
+            @for (var i = 0; i < NodeCount; i++)
+            {
+                var node = i;
+                var (x, y) = points[node];
+                <g class="@NodeClass(node)" transform="translate(@F(x) @F(y))" tabindex="0" role="button"
+                   aria-label="@($"Node {Name(node)}")" aria-pressed="@(node == selectedNode ? "true" : "false")"
+                   @onclick="() => ClickNode(node)" @onkeydown="e => NodeKeyDown(e, node)">
+                    <circle class="ring" r="@F(NodeRadius + 6)" />
+                    <circle class="body" r="@F(NodeRadius)" />
+                    <text dy="0.35em">@Name(node)</text>
+                </g>
+            }
+            @if (CurrentStep is { } shownStep)
+            {
+                for (var i = 0; i < NodeCount; i++)
+                {
+                    var (bx, by) = BadgePosition(i);
+                    var label = FormatDistance(shownStep.Distances[i]);
+                    <g class="badge @(shownStep.Updated.Contains(i) ? "updated" : "")" transform="translate(@F(bx) @F(by))">
+                        <rect x="@F(-(11 + 4.5 * label.Length))" y="-11" width="@F(22 + 9 * label.Length)" height="22" rx="11" />
+                        <text dy="0.35em">@label</text>
+                    </g>
+                }
+            }
+        </svg>
+        <ul class="legend" aria-label="Key">
+            <li><span class="swatch node-swatch"></span>Unvisited</li>
+            <li><span class="swatch current-swatch"></span>Being settled</li>
+            <li><span class="swatch settled-swatch"></span>Settled</li>
+            <li><span class="swatch route-swatch"></span>Shortest path</li>
+        </ul>
+    </section>
+
+    <section class="panel matrix" aria-label="Adjacency matrix">
+        <h2>Adjacency matrix</h2>
+        <p class="hint">Each cell is the weight between two nodes; 0 means no edge. Edit a cell to change it.</p>
+        <div class="scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        @for (var i = 0; i < NodeCount; i++)
+                        {
+                            <th scope="col">@Name(i)</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var a = 0; a < NodeCount; a++)
+                    {
+                        var row = a;
+                        <tr>
+                            <th scope="row">@Name(row)</th>
+                            @for (var b = 0; b < NodeCount; b++)
+                            {
+                                var column = b;
+                                var value = graph.GetWeight(row, column);
+                                if (row == column)
+                                {
+                                    <td class="diagonal">–</td>
+                                }
+                                else
+                                {
+                                    <td class="@(value == 0 ? "empty" : "")">
+                                        <input type="number" min="0" max="999" value="@value" inputmode="numeric"
+                                               aria-label="@($"Weight from {Name(row)} to {Name(column)}")"
+                                               @onchange="e => SetMatrixCell(row, column, e)" />
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel distances" aria-label="Distance table">
+        <h2>Distance table</h2>
+        @if (TableStep is { } table)
+        {
+            <p class="hint">@(IsStepping ? "The working table at this step. The highlighted node is the one being settled." : "The table when the search finished.")</p>
+            <table>
+                <thead>
+                    <tr><th scope="col">Node</th><th scope="col">Distance</th><th scope="col">Via</th><th scope="col">Settled</th></tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < NodeCount; i++)
+                    {
+                        <tr class="@(IsStepping && i == table.Settled ? "current" : "")">
+                            <th scope="row">@Name(i)</th>
+                            <td>@FormatDistance(table.Distances[i])</td>
+                            <td>@(table.Previous[i] == -1 ? "–" : Name(table.Previous[i]))</td>
+                            <td>@(table.Visited[i] ? "✓" : "")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="hint">Find a path to see the table Dijkstra's algorithm builds as it goes.</p>
+        }
+    </section>
+</main>
+
+<footer class="site-footer">
+    <p>
+        Made by Alex Dickinson. Originally an A-Level Computer Science project in VB.NET;
+        the graph and search code here is the same VB.NET library the desktop app uses, running in the browser through Blazor WebAssembly.
+    </p>
+</footer>
