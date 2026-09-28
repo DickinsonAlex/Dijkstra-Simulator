@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>DijkstraSimulator.Desktop</RootNamespace>
+    <AssemblyName>DijkstraSimulator</AssemblyName>
+    <StartupObject>DijkstraSimulator.Desktop.Program</StartupObject>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <OptionExplicit>On</OptionExplicit>
+    <!-- Lets the whole solution build on Linux/macOS (e.g. in CI); the app itself still needs Windows to run. -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DijkstraSimulator.Core\DijkstraSimulator.Core.vbproj" />
+  </ItemGroup>
+
+</Project>

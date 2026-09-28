@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/ci.yml" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/DijkstraSimulator.Core/DijkstraSimulator.Core.vbproj" />
+    <Project Path="src/DijkstraSimulator.Desktop/DijkstraSimulator.Desktop.vbproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DijkstraSimulator.Core.Tests/DijkstraSimulator.Core.Tests.vbproj" />
+  </Folder>
+</Solution>

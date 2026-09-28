@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <Authors>Alex Dickinson</Authors>
+    <Product>Dijkstra Simulator</Product>
+    <Copyright>© 2022–2026 Alex Dickinson</Copyright>
+    <Version>2.0.0</Version>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>
