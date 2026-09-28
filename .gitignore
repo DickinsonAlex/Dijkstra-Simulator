@@ -17,5 +17,8 @@ TestResults/
 .DS_Store
 Thumbs.db
 
+# Local .NET SDK installed by the Cloudflare build script
+.dotnet/
+
 # Local git transfer files
 *.bundle

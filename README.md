@@ -4,7 +4,7 @@
 ![VB.NET](https://img.shields.io/badge/VB.NET-512BD4?logo=dotnet&logoColor=white) ![Blazor](https://img.shields.io/badge/Blazor_WebAssembly-512BD4?logo=blazor&logoColor=white) ![Algorithms](https://img.shields.io/badge/Algorithms-2F6F8F) ![Pathfinding](https://img.shields.io/badge/Pathfinding-2F6F8F) ![A-Level: Computer Science](https://img.shields.io/badge/A--Level-Computer%20Science-1F7A4D)
 <!-- tags:end -->
 
-[![Build, test and deploy](https://github.com/DickinsonAlex/Dijkstra-Simulator/actions/workflows/ci.yml/badge.svg)](https://github.com/DickinsonAlex/Dijkstra-Simulator/actions/workflows/ci.yml)
+[![Build and test](https://github.com/DickinsonAlex/Dijkstra-Simulator/actions/workflows/ci.yml/badge.svg)](https://github.com/DickinsonAlex/Dijkstra-Simulator/actions/workflows/ci.yml)
 [![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)](https://dotnet.microsoft.com/)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
 
@@ -71,7 +71,7 @@ Or open `DijkstraSimulator.slnx` in Visual Studio and pick a start-up project.
 
 ## Deployment
 
-Every push to `main` runs [GitHub Actions](.github/workflows/ci.yml), which builds the solution and runs the tests. The workflow then publishes the web app and deploys the static files to **Cloudflare Pages** with Wrangler. The site is plain static files (HTML, CSS and WebAssembly), so it needs no server.
+The web app is hosted on **Cloudflare Pages**, which rebuilds it on every push to `main` using [`scripts/cloudflare-pages-build.sh`](scripts/cloudflare-pages-build.sh). That script installs the .NET SDK and publishes the app to `publish/wwwroot`. The site is plain static files (HTML, CSS and WebAssembly), so it needs no server. Separately, [GitHub Actions](.github/workflows/ci.yml) builds the whole solution and runs the tests on every push and pull request.
 
 ## Background
 
