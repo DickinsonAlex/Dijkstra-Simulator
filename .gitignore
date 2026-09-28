@@ -1,21 +1,21 @@
-# Visual Studio / build output
-.vs/
-[Dd]ebug/
-[Rr]elease/
-x64/
-x86/
+# Build output
 [Bb]in/
 [Oo]bj/
-ipch/
+publish/
+artifacts/
+TestResults/
+
+# IDEs
+.vs/
+.vscode/
+.idea/
 *.user
 *.suo
-*.ilk
-*.pdb
-*.obj
-*.idb
-*.tlog
-*.log
-*.ipch
-*.sdf
-*.VC.db
-*.VC.opendb
+*.DotSettings.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local git transfer files
+*.bundle
