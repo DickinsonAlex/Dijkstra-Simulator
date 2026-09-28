@@ -194,9 +194,13 @@ Friend NotInheritable Class GraphCanvas
         Using font As New Font("Segoe UI", 9, FontStyle.Bold),
               fill As New SolidBrush(Palette.Background),
               ink As New SolidBrush(Palette.Ink)
-            For Each edge In _graph.Edges()
-                Dim middle As New PointF((points(edge.A).X + points(edge.B).X) / 2, (points(edge.A).Y + points(edge.B).Y) / 2)
-                DrawLabel(g, edge.Weight.ToString(), font, middle, fill, ink)
+            ' Labels slide along their edge rather than sit on top of each other
+            Dim edges = _graph.Edges()
+            Dim labelPositions = CircleLayout.WeightLabelPositions(
+                edges, points.Select(Function(p) (CDbl(p.X), CDbl(p.Y))).ToList(), 30 * DpiScale)
+            For i = 0 To edges.Count - 1
+                Dim at As New PointF(CSng(labelPositions(i).X), CSng(labelPositions(i).Y))
+                DrawLabel(g, edges(i).Weight.ToString(), font, at, fill, ink)
             Next
         End Using
 

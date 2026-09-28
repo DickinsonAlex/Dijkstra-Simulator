@@ -148,6 +148,40 @@ Public Class GraphTests
         Assert.Equal(0, CircleLayout.DistanceToSegment(2, 2, 2, 2, 2, 2), 6)
     End Sub
 
+    <Fact>
+    Public Sub Weight_labels_on_crossing_diagonals_do_not_overlap()
+        ' A square with both diagonals: A–C and B–D both have their middle at the centre
+        Dim g As New Graph(4)
+        g.SetEdge(0, 1, 9)
+        g.SetEdge(1, 2, 4)
+        g.SetEdge(2, 3, 2)
+        g.SetEdge(3, 0, 7)
+        g.SetEdge(0, 2, 1)
+        g.SetEdge(1, 3, 11)
+        Dim points = CircleLayout.Positions(4, 300, 300, 200)
+
+        Dim labels = CircleLayout.WeightLabelPositions(g.Edges(), points, 30)
+
+        Assert.Equal(6, labels.Count)
+        For i = 0 To labels.Count - 1
+            For j = i + 1 To labels.Count - 1
+                Dim gap = Math.Sqrt((labels(i).X - labels(j).X) ^ 2 + (labels(i).Y - labels(j).Y) ^ 2)
+                Assert.True(gap >= 30, $"Labels {i} and {j} are only {gap:0.0} apart")
+            Next
+        Next
+    End Sub
+
+    <Fact>
+    Public Sub Weight_labels_stay_in_the_middle_when_there_is_room()
+        Dim g As New Graph(3)
+        g.SetEdge(0, 1, 5)
+        Dim points = CircleLayout.Positions(3, 0, 0, 100)
+
+        Dim label = CircleLayout.WeightLabelPositions(g.Edges(), points, 30).Single()
+
+        AssertPoint((points(0).X + points(1).X) / 2, (points(0).Y + points(1).Y) / 2, label)
+    End Sub
+
     Private Shared Sub AssertPoint(x As Double, y As Double, actual As (X As Double, Y As Double))
         Assert.Equal(x, actual.X, 6)
         Assert.Equal(y, actual.Y, 6)

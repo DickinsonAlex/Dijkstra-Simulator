@@ -89,6 +89,22 @@ Public Class DijkstraTests
         Assert.False(result.UsesEdge(0, 3))
     End Sub
 
+    <Theory>
+    <InlineData(1, "A → C (distance 1)")>
+    <InlineData(11, "A → D → C (distance 9)")>
+    Public Sub Takes_a_direct_edge_only_when_it_is_shorter(directWeight As Integer, expected As String)
+        ' A square A-B-C-D with both diagonals, as drawn in the simulator
+        Dim g As New Graph(4)
+        g.SetEdge(0, 1, 9)
+        g.SetEdge(1, 2, 4)
+        g.SetEdge(2, 3, 2)
+        g.SetEdge(3, 0, 7)
+        g.SetEdge(1, 3, 11)
+        g.SetEdge(0, 2, directWeight)
+
+        Assert.Equal(expected, FindShortestPath(g, 0, 2).Describe())
+    End Sub
+
     <Fact>
     Public Sub Rejects_nodes_outside_the_graph()
         Assert.Throws(Of ArgumentOutOfRangeException)(Sub() FindShortestPath(SampleGraph(), 0, 6))
