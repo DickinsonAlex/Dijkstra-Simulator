@@ -12,13 +12,17 @@ A Windows desktop app, written entirely in **VB.NET**, for building a weighted g
 
 > This is the `submission` branch: the VB.NET desktop version on its own. The [`main`](https://github.com/DickinsonAlex/Dijkstra-Simulator) branch also runs the same code in a web browser.
 
+![The simulator showing the shortest route from A to E, A → C → E with a distance of 19, highlighted in green, with the distance table and adjacency matrix](docs/screenshots/route.png)
+
 ## Features
 
 - **Build a graph by clicking.** Choose how many nodes you want (2–15), click two nodes to join them with an edge of any weight, and click an edge to remove it. There's also a button to generate a random connected graph.
-- **Edit the adjacency matrix directly.** The matrix under the graph stays in sync with the drawing, and typing a weight into a cell adds, changes or removes that edge.
+- **Edit the adjacency matrix directly.** The matrix below the controls stays in sync with the drawing, and typing a weight into a cell adds, changes or removes that edge.
 - **Find the shortest path** between any two nodes. The route is highlighted in green along with its total distance, or you're told there's no route.
 - **Step through the search.** Go back and forth one step at a time. Each step shows which node is being settled, which distances were updated and the working distance table, just like a worked exam answer.
 - **Scales properly.** The graph redraws itself when the window is resized, and the app is sharp on high-DPI screens.
+
+![A sparser graph: A → C → E with a distance of 3. Node F isn't connected, so the table shows it as unreached (∞)](docs/screenshots/sparse-route.png)
 
 ## How the search works
 
